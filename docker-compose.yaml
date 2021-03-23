@@ -1,0 +1,23 @@
+# docker-compose.yml
+version: "3"
+services:
+  counter_web:
+    build: .
+    depends_on:
+      - counter_graphql
+    environment:
+      NEXT_PUBLIC_GRAPHQL_HOST: 45.77.30.163:4000
+      NODE_ENV: production
+      PORT: 3000
+    ports:
+      - "3000:3000"
+    command: yarn client:start
+
+  counter_graphql:
+    build: .
+    environment:
+      NODE_ENV: production
+      PORT: 4000
+    ports:
+      - "4000:4000"
+    command: yarn graphql:start
