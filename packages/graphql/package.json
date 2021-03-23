@@ -1,0 +1,19 @@
+{
+  "name": "@counter/graphql",
+  "version": "1.0.0",
+  "license": "MIT",
+  "main": "src/index.ts",
+  "scripts": {
+    "dev": "nodemon --watch '**/*.ts' --exec 'ts-node' src/index",
+    "start": "ts-node --transpile-only src/index"
+  },
+  "dependencies": {
+    "@solana/web3.js": "0.96.0",
+    "buffer-layout": "1.2.0",
+    "apollo-server": "2.21.2",
+    "class-validator": "0.13.1",
+    "graphql": "15.5.0",
+    "reflect-metadata": "0.1.13",
+    "type-graphql": "1.1.1"
+  }
+}

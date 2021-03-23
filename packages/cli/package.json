@@ -1,0 +1,12 @@
+{
+  "name": "@counter/cli",
+  "version": "1.0.0",
+  "license": "MIT",
+  "main": "src/index.ts",
+  "scripts": {
+    "start": "ts-node src/index"
+  },
+  "dependencies": {
+    "commander": "7.2.0"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "name": "@counter/solana",
+  "version": "1.0.0",
+  "license": "MIT",
+  "main": "src/index.ts",
+  "dependencies": {
+    "@solana/web3.js": "0.96.0",
+    "eventemitter3": "4.0.7",
+    "bs58": "4.0.1"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "cSpell.words": [
+    "blockhash",
+    "devnet",
+    "lamports",
+    "pubkey",
+    "solana",
+    "struct",
+    "tailwindcss"
+  ],
+  "editor.formatOnSave": true,
+  "typescript.preferences.importModuleSpecifier": "relative"
+}

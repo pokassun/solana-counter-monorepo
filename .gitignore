@@ -1,0 +1,12 @@
+node_modules
+.next
+out
+*.log
+coverage
+.eslintcache
+.env*
+!.env.prod
+postgres_data
+.DS_Store
+last
+package-lock.json

@@ -1,0 +1,62 @@
+{
+  "private": true,
+  "name": "@counter/monorepo",
+  "version": "1.0.0",
+  "license": "MIT",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "lint": "eslint --cache --ext .ts,.tsx .",
+    "lint:fix": "eslint --fix --ext .ts,.tsx .",
+    "cli": "yarn workspace @counter/cli start",
+    "solana:local": "solana config set --url http://localhost:8899",
+    "solana:devnet": "solana config set --url https://devnet.solana.com",
+    "client:dev": "env-cmd yarn workspace @counter/client dev",
+    "client:start": "env-cmd yarn workspace @counter/client start",
+    "client:build": "env-cmd yarn workspace @counter/client build",
+    "graphql:dev": "env-cmd yarn workspace @counter/graphql dev",
+    "graphql:start": "env-cmd yarn workspace @counter/graphql start",
+    "program:build": "cd packages/program && cargo build && cargo build-bpf && cp target/deploy/spl_counter.so dist/spl_counter.so",
+    "program:deploy": "yarn cli deploy program/dist/spl_counter.so 4 devnet",
+    "program:debug": "export RUST_LOG=solana_runtime::system_instruction_processor=trace,solana_runtime::message_processor=debug,solana_bpf_loader=debug,solana_rbpf=debug",
+    "account:info": "yarn cli info",
+    "postinstall": "patch-package"
+  },
+  "devDependencies": {
+    "@babel/core": "7.13.10",
+    "@babel/preset-env": "7.13.12",
+    "@babel/preset-react": "7.12.13",
+    "@babel/preset-typescript": "7.13.0",
+    "@types/jest": "26.0.21",
+    "@types/node": "14.14.35",
+    "dotenv": "8.2.0",
+    "isomorphic-unfetch": "3.1.0",
+    "jest": "26.6.3",
+    "nock": "13.0.11",
+    "nodemon": "2.0.7",
+    "env-cmd": "10.1.0",
+    "@typescript-eslint/eslint-plugin": "4.19.0",
+    "@typescript-eslint/parser": "4.19.0",
+    "eslint": "7.22.0",
+    "eslint-config-prettier": "8.1.0",
+    "eslint-plugin-import": "2.22.1",
+    "eslint-plugin-jsx-a11y": "6.4.1",
+    "eslint-plugin-jest": "24.3.2",
+    "eslint-plugin-jest-dom": "3.6.5",
+    "eslint-plugin-node": "11.1.0",
+    "eslint-plugin-prettier": "3.3.1",
+    "eslint-plugin-promise": "4.3.1",
+    "eslint-plugin-react": "7.23.0",
+    "eslint-plugin-react-hooks": "4.2.0",
+    "eslint-plugin-simple-import-sort": "7.0.0",
+    "prettier": "2.2.1",
+    "ts-node": "9.1.1",
+    "ts-jest": "26.5.4",
+    "patch-package": "6.4.7",
+    "typescript": "4.2.3"
+  },
+  "resolutions": {
+    "@solana/web3.js": "0.96.0"
+  }
+}
