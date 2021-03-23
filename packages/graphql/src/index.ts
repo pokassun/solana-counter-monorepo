@@ -7,12 +7,11 @@ import path from 'path';
 import { buildSchema, emitSchemaDefinitionFile } from 'type-graphql';
 
 import { CounterResolver } from './types/counter-resolver';
-import { TransactionResolver } from './types/transaction-resolver';
 
 async function bootstrap() {
   // Build the TypeGraphQL schema
   const schema = await buildSchema({
-    resolvers: [CounterResolver, TransactionResolver]
+    resolvers: [CounterResolver]
   });
 
   await emitSchemaDefinitionFile(

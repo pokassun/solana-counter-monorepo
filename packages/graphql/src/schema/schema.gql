@@ -3,13 +3,6 @@
 # !!!   DO NOT MODIFY THIS FILE BY YOURSELF   !!!
 # -----------------------------------------------
 
-"""Desired commitment level"""
-enum Commitment {
-  Confirmed
-  Finalized
-  Processed
-}
-
 """Object representing the Counter data"""
 type CounterCount {
   count: Int!
@@ -21,19 +14,8 @@ The javascript `Date` as string. Type represents date and time as the ISO Date s
 """
 scalar DateTime
 
-type Mutation {
-  sendTransaction(data: SendTransactionInput!): Int!
-}
-
 type Query {
   GetCurrentCount: Int!
-  getRecentBlockhash: String!
-  getSlot: Int!
-}
-
-input SendTransactionInput {
-  commitment: Commitment!
-  data: [Int!]!
 }
 
 type Subscription {
