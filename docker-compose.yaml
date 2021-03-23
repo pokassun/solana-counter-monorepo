@@ -2,6 +2,7 @@
 version: "3"
 services:
   counter_web:
+    image: counter
     build: .
     depends_on:
       - counter_graphql
@@ -14,7 +15,7 @@ services:
     command: yarn client:start
 
   counter_graphql:
-    build: .
+    image: counter
     environment:
       NODE_ENV: production
       PORT: 4000
