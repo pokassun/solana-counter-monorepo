@@ -27,6 +27,7 @@ async function bootstrap() {
   const server = new ApolloServer({
     schema,
     playground: true,
+    introspection: true,
     context: {
       conn,
       pubSub
