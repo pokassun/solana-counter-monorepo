@@ -10,3 +10,5 @@ postgres_data
 .DS_Store
 last
 package-lock.json
+target
+.anchor

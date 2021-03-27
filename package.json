@@ -24,7 +24,8 @@
     "postinstall": "patch-package"
   },
   "devDependencies": {
-    "@babel/core": "7.13.10",
+    "@project-serum/anchor": "0.3.1-beta.2",
+    "@babel/core": "7.13.13",
     "@babel/preset-env": "7.13.12",
     "@babel/preset-react": "7.12.13",
     "@babel/preset-typescript": "7.13.0",

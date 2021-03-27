@@ -13,6 +13,30 @@ This monorepo is divided in
 
 ## Getting Started
 
+### Setup anchor
+
+Dependencies
+
+```sh
+npm install -g typescript ts-mocha  @project-serum/anchor
+```
+
+You also need NODE_PATH 
+
+```sh
+# on mac
+export NODE_PATH=~/.npm-global/lib/node_modules/ 
+```
+
+Run test
+
+```sh
+anchor test
+```
+
+if get connection error, kill `solana-test-validator
+
+
 ### Step 1 - Build Program
 
 We need to build the counter program:
