@@ -1,12 +1,13 @@
-import { PublicKey, Transaction } from '@solana/web3.js';
+import { Wallet } from '@project-serum/anchor';
+import { Account, PublicKey, Transaction } from '@solana/web3.js';
 import bs58 from 'bs58';
 import EventEmitter from 'eventemitter3';
 
-export class Wallet extends EventEmitter {
+export class SolletWallet extends EventEmitter implements Wallet {
   _providerUrl: URL;
   _injectedProvider: any; // TODO: object with post message
   _network: string;
-  _publicKey: PublicKey | null;
+  _publicKey: PublicKey;
   _autoApprove: boolean;
   _handlerAdded: boolean;
   _nextRequestId: number;
@@ -27,13 +28,14 @@ export class Wallet extends EventEmitter {
       // throw new Error("provider parameter must be an injected provider or a URL string.");
     }
     this._network = network;
-    this._publicKey = null;
+    this._publicKey = null as any;
     this._autoApprove = false;
     this._popup = null;
     this._handlerAdded = false;
     this._nextRequestId = 1;
     this._responsePromises = new Map();
   }
+  payer: Account;
 
   _handleMessage = (e: MessageEvent<any>) => {
     if (
@@ -86,7 +88,7 @@ export class Wallet extends EventEmitter {
 
   _handleDisconnect = () => {
     if (this._publicKey) {
-      this._publicKey = null;
+      this._publicKey = undefined as any;
       this.emit('disconnect');
     }
     this._responsePromises.forEach(([resolve, reject], id) => {

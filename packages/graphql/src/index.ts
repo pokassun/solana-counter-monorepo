@@ -1,6 +1,5 @@
 import 'reflect-metadata';
 
-import programConfig from '@counter/program/dist/config.json';
 import { getConnection } from '@counter/solana';
 import { ApolloServer, PubSub } from 'apollo-server';
 import path from 'path';
@@ -19,7 +18,7 @@ async function bootstrap() {
     schema
   );
 
-  const conn = await getConnection(programConfig.network);
+  const conn = await getConnection('devnet');
 
   const pubSub = new PubSub();
 

@@ -1,9 +1,11 @@
 import { gql, useQuery, useSubscription } from '@apollo/client';
-import { Wallet } from '@counter/solana';
+import { CounterProgram } from '@counter/programs';
+import { getConnection } from '@counter/solana';
+import { SolletWallet } from '@counter/wallets';
+import { Provider } from '@project-serum/anchor';
 import React, { useEffect, useMemo, useState } from 'react';
 
 import { Button, ButtonRadius, Container, Footer, Header } from '../components';
-import { CounterProgram } from '../program/counter';
 
 const GET_COUNT = gql`
   query {
@@ -22,16 +24,15 @@ const SUBSCRIBE_COUNT = gql`
 
 const Main: React.FC = () => {
   const [logs, setLogs] = useState<string[]>([]);
-  const counterProgram = useMemo(() => new CounterProgram(), []);
 
-  const wallet = useMemo(
-    () => new Wallet('https://www.sollet.io', counterProgram.network),
+  const wallet: SolletWallet = useMemo(
+    () => new SolletWallet('https://www.sollet.io', 'devnet'),
     []
   );
 
-  const [connectedWallet, setConnectedWallet] = useState<Wallet | undefined>(
-    undefined
-  );
+  const [connectedWallet, setConnectedWallet] = useState<
+    SolletWallet | undefined
+  >(undefined);
   const [isConnected, setConnected] = useState(false);
   const [counterValue, setCounterValue] = useState<number>();
 
@@ -94,7 +95,11 @@ const Main: React.FC = () => {
       return;
     }
     try {
-      await counterProgram.increment(connectedWallet);
+      const connection = await getConnection('devnet');
+      const counterProgram = new CounterProgram(
+        new Provider(connection, connectedWallet, {})
+      );
+      await counterProgram.increment();
     } catch (e) {
       addLog('Error: ' + e.toString());
     }
@@ -105,7 +110,11 @@ const Main: React.FC = () => {
       return;
     }
     try {
-      await counterProgram.decrement(connectedWallet);
+      const connection = await getConnection('devnet');
+      const counterProgram = new CounterProgram(
+        new Provider(connection, connectedWallet, {})
+      );
+      await counterProgram.decrement();
     } catch (e) {
       addLog('Error: ' + e.toString());
     }

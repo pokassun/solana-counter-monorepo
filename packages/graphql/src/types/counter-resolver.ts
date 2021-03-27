@@ -1,6 +1,5 @@
-import programConfig from '@counter/program/dist/config.json';
-import { PublicKey } from '@solana/web3.js';
-import BufferLayout from 'buffer-layout';
+import { CounterProgram } from '@counter/programs';
+import { Provider, web3 } from '@project-serum/anchor';
 import { Ctx, Int, Query, Resolver, Root, Subscription } from 'type-graphql';
 
 import { AppContext } from './app-context';
@@ -10,31 +9,27 @@ import { CounterCount } from './counter-type';
 export class CounterResolver {
   static subscriptions = new Map<string, number>();
 
-  static decodeData(data: Buffer): number {
-    const dataLayout = BufferLayout.struct([BufferLayout.u32('count')]);
-    const result = dataLayout.decode(Buffer.from(data));
-    return result.count;
-  }
-
   @Query(() => Int)
-  async GetCurrentCount(@Ctx() ctx: AppContext): Promise<number> {
-    const publicKey = new PublicKey(programConfig.programData);
-    const account = await ctx.conn.getAccountInfo(publicKey);
-    if (account) {
-      return CounterResolver.decodeData(account.data);
-    }
-    return 0;
+  async GetCurrentCount(@Ctx() { conn }: AppContext): Promise<number> {
+    const provider = Provider.local(web3.clusterApiUrl('devnet'));
+    const program = new CounterProgram(provider);
+    const count = program.getCount();
+    return count;
   }
 
   @Subscription(() => CounterCount, {
     subscribe: (_, __, { pubSub, conn }: AppContext) => {
-      const publicKey = new PublicKey(programConfig.programData);
+      const provider = Provider.local(web3.clusterApiUrl('devnet'));
+      const program = new CounterProgram(provider);
       if (!CounterResolver.subscriptions.has('COUNTER_COUNT_CHANGED')) {
-        const id = conn.onAccountChange(publicKey, account => {
-          const count = CounterResolver.decodeData(account.data);
-          pubSub.publish('COUNTER_COUNT_CHANGED', count);
+        program.program.addEventListener('CounterChangeEvent', (data, slot) => {
+          console.log('CounterChangeEvent', data);
         });
-        CounterResolver.subscriptions.set('COUNTER_COUNT_CHANGED', id);
+        // const id = conn.onAccountChange(program.programData, account => {
+        //   console.log('account:', account);
+        //   pubSub.publish('COUNTER_COUNT_CHANGED', 0);
+        // });
+        CounterResolver.subscriptions.set('COUNTER_COUNT_CHANGED', 1);
       }
       return pubSub.asyncIterator('COUNTER_COUNT_CHANGED');
     }

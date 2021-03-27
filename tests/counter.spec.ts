@@ -1,12 +1,7 @@
-import { Provider, setProvider, web3, workspace } from '@project-serum/anchor';
+import { web3, workspace } from '@project-serum/anchor';
 import assert from 'assert';
 
 describe('counter_test', () => {
-  const provider = Provider.local();
-
-  // Configure the client to use the local cluster.
-  setProvider(provider);
-
   // Counter for the tests.
   const counter = new web3.Account();
 
@@ -14,7 +9,7 @@ describe('counter_test', () => {
   const program = workspace.Counter;
 
   it('Creates a counter', async () => {
-    await program.rpc.create(provider.wallet.publicKey, {
+    await program.rpc.create({
       accounts: {
         counter: counter.publicKey,
         rent: web3.SYSVAR_RENT_PUBKEY
@@ -25,35 +20,30 @@ describe('counter_test', () => {
 
     const counterAccount = await program.account.counter(counter.publicKey);
 
-    assert.ok(counterAccount.authority.equals(provider.wallet.publicKey));
     assert.ok(counterAccount.count.toNumber() === 0);
   });
 
   it('Increment a counter', async () => {
     await program.rpc.increment({
       accounts: {
-        counter: counter.publicKey,
-        authority: provider.wallet.publicKey
+        counter: counter.publicKey
       }
     });
 
     const counterAccount = await program.account.counter(counter.publicKey);
 
-    assert.ok(counterAccount.authority.equals(provider.wallet.publicKey));
     assert.ok(counterAccount.count.toNumber() == 1);
   });
 
   it('Decrement a counter', async () => {
     await program.rpc.decrement({
       accounts: {
-        counter: counter.publicKey,
-        authority: provider.wallet.publicKey
+        counter: counter.publicKey
       }
     });
 
     const counterAccount = await program.account.counter(counter.publicKey);
 
-    assert.ok(counterAccount.authority.equals(provider.wallet.publicKey));
     assert.ok(counterAccount.count.toNumber() == 0);
   });
 

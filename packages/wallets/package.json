@@ -1,5 +1,5 @@
 {
-  "name": "@counter/solana",
+  "name": "@counter/wallets",
   "version": "1.0.0",
   "license": "MIT",
   "main": "src/index.ts",

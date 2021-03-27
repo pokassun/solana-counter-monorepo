@@ -8,9 +8,8 @@ use anchor_lang::prelude::*;
 mod counter {
     use super::*;
 
-    pub fn create(ctx: Context<Create>, authority: Pubkey) -> ProgramResult {
+    pub fn create(ctx: Context<Create>) -> ProgramResult {
         let counter = &mut ctx.accounts.counter;
-        counter.authority = authority;
         counter.count = 0;
         Ok(())
     }
@@ -18,6 +17,7 @@ mod counter {
     pub fn increment(ctx: Context<Increment>) -> ProgramResult {
         let counter = &mut ctx.accounts.counter;
         counter.count += 1;
+        msg!("increment");
         emit!(CounterChangeEvent {
             data: counter.count,
             action: "increment".to_string(),
@@ -30,6 +30,7 @@ mod counter {
         // if counter.count == 0 {
         //     Err(CounterError::CountReachMinimum.into();
         // }
+        msg!("decrement");
         counter.count -= 1;
         emit!(CounterChangeEvent {
             data: counter.count,
@@ -50,25 +51,20 @@ pub struct Create<'info> {
 
 #[derive(Accounts)]
 pub struct Increment<'info> {
-    #[account(mut, has_one = authority)]
+    #[account(mut)]
     pub counter: ProgramAccount<'info, Counter>,
-    #[account(signer)]
-    pub authority: AccountInfo<'info>,
 }
 
 #[derive(Accounts)]
 pub struct Decrement<'info> {
-    #[account(mut, has_one = authority)]
+    #[account(mut)]
     pub counter: ProgramAccount<'info, Counter>,
-    #[account(signer)]
-    pub authority: AccountInfo<'info>,
 }
 
 // Define the program owned accounts.
 
 #[account]
 pub struct Counter {
-    pub authority: Pubkey,
     pub count: u64,
 }
 

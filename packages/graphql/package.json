@@ -8,9 +8,9 @@
     "start": "ts-node --transpile-only src/index"
   },
   "dependencies": {
-    "@solana/web3.js": "0.96.0",
+    "@solana/web3.js": "1.1.1",
     "buffer-layout": "1.2.0",
-    "apollo-server": "2.21.2",
+    "apollo-server": "2.22.1",
     "class-validator": "0.13.1",
     "graphql": "15.5.0",
     "reflect-metadata": "0.1.13",
