@@ -57,7 +57,12 @@ describe('counter_test', () => {
   //         resolve([event, slot]);
   //       }
   //     );
-  //     program.rpc.increment();
+  //     program.rpc
+  //       .increment({
+  //         accounts: {
+  //           counter: counter.publicKey
+  //         }
+  //       });
   //   });
   //   await program.removeEventListener(listener);
 

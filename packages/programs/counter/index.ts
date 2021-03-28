@@ -41,8 +41,14 @@ export class CounterProgram {
   }
 
   async getCount(): Promise<number> {
-    const counterAccount = await this.program.account.counter(this.programData);
-    const count = counterAccount.count as BN;
+    const accountData = await this.program.account.counter(this.programData);
+    const count = accountData.count as BN;
+    return count.toNumber();
+  }
+
+  decodeAccountData(data: Buffer): number {
+    const accountData = this.program.coder.accounts.decode('Counter', data);
+    const count = accountData.count as BN;
     return count.toNumber();
   }
 

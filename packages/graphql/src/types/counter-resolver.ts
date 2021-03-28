@@ -22,14 +22,15 @@ export class CounterResolver {
       const provider = Provider.local(web3.clusterApiUrl('devnet'));
       const program = new CounterProgram(provider);
       if (!CounterResolver.subscriptions.has('COUNTER_COUNT_CHANGED')) {
-        program.program.addEventListener('CounterChangeEvent', (data, slot) => {
-          console.log('CounterChangeEvent', data);
-        });
-        // const id = conn.onAccountChange(program.programData, account => {
-        //   console.log('account:', account);
-        //   pubSub.publish('COUNTER_COUNT_CHANGED', 0);
+        // TODO: we can try also with the events
+        // program.program.addEventListener('CounterChangeEvent', (data, slot) => {
+        //   console.log('CounterChangeEvent', data);
         // });
-        CounterResolver.subscriptions.set('COUNTER_COUNT_CHANGED', 1);
+        const id = conn.onAccountChange(program.programData, account => {
+          const count = program.decodeAccountData(account.data);
+          pubSub.publish('COUNTER_COUNT_CHANGED', count);
+        });
+        CounterResolver.subscriptions.set('COUNTER_COUNT_CHANGED', id);
       }
       return pubSub.asyncIterator('COUNTER_COUNT_CHANGED');
     }

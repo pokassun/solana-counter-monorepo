@@ -27,9 +27,9 @@ mod counter {
 
     pub fn decrement(ctx: Context<Increment>) -> ProgramResult {
         let counter = &mut ctx.accounts.counter;
-        // if counter.count == 0 {
-        //     Err(CounterError::CountReachMinimum.into();
-        // }
+        if counter.count == 0 {
+            return Err(CounterError::CountBelowZero.into());
+        }
         msg!("decrement");
         counter.count -= 1;
         emit!(CounterChangeEvent {
@@ -82,5 +82,5 @@ pub struct CounterChangeEvent {
 #[error]
 pub enum CounterError {
     #[msg("Counter can't go below zero")]
-    CountReachMinimum,
+    CountBelowZero,
 }
